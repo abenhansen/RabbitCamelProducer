@@ -1,4 +1,4 @@
-package com.example.demo;
+package travelagency;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,15 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoApplication {
 
     public static void main(String[] args) {
-        String message  = args[0];
+/*        String message  = "Hello World";
         try{
             //Why are you creating this, when this is a static method???
             //RabbitConfig rabbitConfig = new RabbitConfig();
-            RabbitConfig.configConnection(message);
+            RabbitConfig.configConnection(message,"USA");
         }
         catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
         SpringApplication.run(DemoApplication.class, args);
     }
 

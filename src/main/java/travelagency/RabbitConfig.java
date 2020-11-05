@@ -1,4 +1,4 @@
-package com.example.demo;
+package travelagency;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -12,7 +12,7 @@ public class RabbitConfig {
     public final static String EXCHANGE_NAME = "myrabbitexchange";
     public final static String BINDING_KEY = "camel";
 
-    public static void configConnection(String message) throws Exception
+    public static void configConnection(String message,String queue) throws Exception
     {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
@@ -24,10 +24,10 @@ public class RabbitConfig {
             channel.exchangeDeclare(EXCHANGE_NAME, "direct", true);
 
             // declare a durable, non exclusive, non auto-delete queue
-            channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+            channel.queueDeclare(queue, true, false, false, null);
 
             // bind the queue to the exchange with the routing key 'camel'
-            channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, BINDING_KEY);
+            channel.queueBind(queue, EXCHANGE_NAME, BINDING_KEY);
             channel.basicPublish(EXCHANGE_NAME, BINDING_KEY, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
         }
     }
