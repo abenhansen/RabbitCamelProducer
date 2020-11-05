@@ -19,8 +19,8 @@ public class Offer {
     public Offer(){
 
     }
-    public Offer(String queue, Long id, double price, Date date) {
-        this.destination = queue;
+    public Offer(String destination, double price, Date date) {
+        this.destination = destination;
         this.id = id;
         this.price = price;
         this.date = date;
