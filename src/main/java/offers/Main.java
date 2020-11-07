@@ -12,7 +12,7 @@ import java.util.Date;
 public class Main {
 
     public static void main(String[] args) {
-        String message  = "Hello World";
+        //TODO: make console program that can accept below as input
         Offer offer1 = new Offer("USA",200, new Date());
         Offer offer2 = new Offer("CHINA",500, new Date());
         Offer offer3 = new Offer("INDIA",400, new Date());

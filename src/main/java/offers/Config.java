@@ -9,7 +9,7 @@ public class Config {
 
 
     public final static String QUEUE_NAME = "myrabbitqueue";
-    public final static String EXCHANGE_NAME = "myrabbitexchange";
+    public final static String EXCHANGE_NAME = "travelagency";
     public final static String BINDING_KEY = "camel";
 
     public static void configConnection(String message, String queue) throws Exception {
