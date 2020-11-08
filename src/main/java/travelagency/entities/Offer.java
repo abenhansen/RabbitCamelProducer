@@ -1,9 +1,10 @@
 package travelagency.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,13 +14,13 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double price;
-    private Date date;
+    private String date;
     private String destination;
 
     public Offer(){
 
     }
-    public Offer(String destination, double price, Date date) {
+    public Offer(String destination, double price, String date) {
         this.destination = destination;
         this.id = id;
         this.price = price;
@@ -38,7 +39,7 @@ public class Offer {
         return price;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 }

@@ -23,18 +23,6 @@ public class Main2 {
         app.run();
         try {
             String message = Reciever.Recieve("USA");
-            JsonObject jobj = new Gson().fromJson(message, JsonObject.class);
-            Long id = jobj.get("id").getAsLong();
-            Double price = jobj.get("price").getAsDouble();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-            try {
-                date  = formatter.parse(jobj.get("date").getAsString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            String destination = jobj.get("destination").getAsString();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TimeoutException e) {

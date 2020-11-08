@@ -38,13 +38,7 @@ public class Reciever {
         Long id = jobj.get("id").getAsLong();
         Double price = jobj.get("price").getAsDouble();
         String destination = jobj.get("destination").getAsString();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        try {
-            date  = formatter.parse(jobj.get("date").getAsString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        String date = jobj.get("date").getAsString();
         System.out.println("Offer recieved: Destination " + destination + ", price: " + price + ", date: " + date);
         System.out.println("Accept or pass?");
         Scanner scanner = new Scanner(System.in);
