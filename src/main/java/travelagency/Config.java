@@ -1,4 +1,4 @@
-package offers;
+package travelagency;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
