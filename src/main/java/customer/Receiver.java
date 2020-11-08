@@ -6,16 +6,13 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
-
+import customer.dto.BookingDTO;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
-public class Reciever {
-    public static String Recieve(String queue) throws IOException, TimeoutException {
+public class Receiver {
+    public static void receive(String queue) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         Connection connection = factory.newConnection();
@@ -27,26 +24,39 @@ public class Reciever {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
 
             String message = new String(delivery.getBody(), "UTF-8");
-            handleMessage(message);
+            try {
+                handleMessage(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         };
-        return channel.basicConsume(queue, true, deliverCallback, consumerTag -> { });
+        channel.basicConsume(queue, true, deliverCallback, consumerTag -> { });
     }
 
-    private static void handleMessage(String message){
+    private static void handleMessage(String message) throws Exception {
         JsonObject jobj = new Gson().fromJson(message, JsonObject.class);
         System.out.println(jobj);
         Long id = jobj.get("id").getAsLong();
         Double price = jobj.get("price").getAsDouble();
         String destination = jobj.get("destination").getAsString();
         String date = jobj.get("date").getAsString();
+        respondToOffer(destination,date,price,id);
+
+    }
+
+    private static void respondToOffer(String destination, String date, Double price, Long id) throws Exception {
         System.out.println("Offer recieved: Destination " + destination + ", price: " + price + ", date: " + date);
-        System.out.println("Accept or pass?");
+        System.out.println("Do you accept? YES or NO");
         Scanner scanner = new Scanner(System.in);
         String answer = scanner.next();
-        if(answer.equals("pass")){
-
-        }else{
-            //TODO : produce new rabbitmq message
+        Gson gson = new Gson();
+        if(answer.toLowerCase().equals("yes")){
+            System.out.println("Enter name");
+            String name = scanner.next();
+            System.out.println("Enter email");
+            String email = scanner.next();
+            BookingDTO data = new BookingDTO(name,email,id);
+            Sender.sendBookingConfirmation(gson.toJson(data));
         }
     }
 }

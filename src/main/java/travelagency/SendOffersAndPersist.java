@@ -3,15 +3,11 @@ package travelagency;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import travelagency.datalayer.OfferRepository;
+import travelagency.repository.OfferRepository;
 import travelagency.entities.Offer;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Date;
+import java.util.Scanner;
 
 @Component
 public class SendOffersAndPersist {
@@ -25,19 +21,37 @@ public class SendOffersAndPersist {
     }
 
 
-    public static void SendOffer() throws ParseException {
-        Offer offer1 = new Offer("USA",35, LocalDate.of(2020, 10,10).toString());
-        offer1 = repo.save(offer1);
-        System.out.println("id is " + offer1.getId());
-        Gson gson = new Gson();
-        try{
-            String json = gson.toJson(offer1);
-            System.out.println(json);
-            Config.configConnection(json,offer1.getDestination());
+    public static void sendOffer() throws ParseException {
+        boolean run = true;
+        Scanner scan = new Scanner(System.in);
+        while(run){
+            System.out.println("NEW OFFER");
+            System.out.println("Enter destination country:");
+            String destination = scan.next().toUpperCase();
+            System.out.println("Enter price:");
+            Double price = scan.nextDouble();
+            System.out.println("Enter date (YYYY-MM-DD):");
+            String date = scan.next();
+            Offer offer = new Offer(destination,price, date);
+            offer = repo.save(offer);
+            System.out.println("id is " + offer.getId());
+            Gson gson = new Gson();
+            try{
+                String json = gson.toJson(offer);
+                System.out.println(json);
+                MessageToCustomers.sendMessageToQueue(json,offer.getDestination());
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            System.out.println("Do you want to create another offer? YES / NO");
+            String choice = scan.next();
+            if(choice.toUpperCase().equals("NO")){
+                run = false;
+            }
         }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+
+
 
     }
 }

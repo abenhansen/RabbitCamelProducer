@@ -18,9 +18,8 @@ public class Booking {
 
     }
 
-    public Booking(Customer customer, Long id, Offer offer) {
+    public Booking(Customer customer, Offer offer) {
         this.customer = customer;
-        this.id = id;
         this.offer = offer;
     }
 
